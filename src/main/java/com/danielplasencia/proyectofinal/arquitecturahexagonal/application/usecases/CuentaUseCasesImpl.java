@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,7 +24,7 @@ import java.util.UUID;
 
 
 @RequiredArgsConstructor
-//@Transactional
+@Transactional
 @Slf4j
 public class CuentaUseCasesImpl implements CrearCuentaUseCase, EncontrarCuentaUseCase, ConsultarSaldoUseCase {
 
@@ -47,26 +47,62 @@ public class CuentaUseCasesImpl implements CrearCuentaUseCase, EncontrarCuentaUs
     @Override
     public Cuenta execute(Cuenta newCuenta) {
 
+        // Valida que la cuenta no sea null
         if (newCuenta == null) {
             throw new InvalidCuentaDataException("La cuenta no puede ser nula");
         }
 
+        // Domain validation
+        newCuenta.validarCuentaInput();
+
+        // Valida que tenga un cliente_id
         if (newCuenta.getCliente_id() == null || newCuenta.getCliente_id().isBlank()) {
             throw new InvalidCuentaDataException("La cuenta debe tener un cliente asociado");
         }
 
-        // Validamos que el cliente exista
-        var clienteOpt = clienteRepositoryPort.findById(newCuenta.getCliente_id());
-        if (clienteOpt.isEmpty()) {
-            throw new InvalidCuentaDataException(
-                    "No existe cliente con id: " + newCuenta.getCliente_id()
-            );
+        // Validar si cliente existe
+        clienteRepositoryPort.findById(newCuenta.getCliente_id())
+                .orElseThrow(() -> new InvalidCuentaDataException(
+                        "No existe cliente con id: " + newCuenta.getCliente_id()));
+
+
+        /**
+         * SETEA ID y NUMERO DE CUENTA
+          */
+
+        // Generar ID si no viene
+        if (newCuenta.getCuenta_id() == null || newCuenta.getCuenta_id().isBlank()) {
+            newCuenta.setCuenta_id(UUID.randomUUID().toString());
         }
+
+        // Generar número de cuenta si no viene
+        if (newCuenta.getNumero_cuenta() == null || newCuenta.getNumero_cuenta().isBlank()) {
+            newCuenta.setNumero_cuenta(generarNumeroCuenta());
+        }
+
+        /**
+         * VALIDACIONES QUE PIDE EL EJERCICIO ADICIONALES A LAS QUE SE HACEN EN EL MISMO MODEL
+         */
+
+        // Validar número de cuenta único
+        cuentaRepositoryPort.findByNumeroCuenta(newCuenta.getNumero_cuenta())
+                .ifPresent(existing -> {
+                    throw new InvalidCuentaDataException(
+                            "El número de cuenta ya existe: " + newCuenta.getNumero_cuenta());
+                });
+
+
+        // Setear fecha de creacion si no viene y actualizar fecha de actualización
+        if (newCuenta.getFecha_creacion() == null) {
+            newCuenta.setFecha_creacion(LocalDateTime.now());
+        }
+        newCuenta.setFecha_actualizacion(LocalDateTime.now());
 
         return cuentaRepositoryPort.save(newCuenta);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Cuenta findCuentaById(String cuenta_id) {
 
 
@@ -78,10 +114,17 @@ public class CuentaUseCasesImpl implements CrearCuentaUseCase, EncontrarCuentaUs
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Cuenta> findAllCuenta() {
         log.info("Buscando todas las cuentas");
         List<Cuenta> cuentas = cuentaRepositoryPort.findAll();
         log.info("Se encontraron {} cuentas", cuentas.size());
         return cuentas;
+    }
+
+    // ===================== Helpers privados =====================
+    private String generarNumeroCuenta() {
+        // Para generar numeros de cuenta
+        return "ACC-" + System.currentTimeMillis();
     }
 }
