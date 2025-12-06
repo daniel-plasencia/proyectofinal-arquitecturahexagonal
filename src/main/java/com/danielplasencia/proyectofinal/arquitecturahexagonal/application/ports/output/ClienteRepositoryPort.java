@@ -2,8 +2,6 @@ package com.danielplasencia.proyectofinal.arquitecturahexagonal.application.port
 
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.model.Cliente;
 
-import java.security.SecureRandom;
-import java.util.List;
 import java.util.Optional;
 
 public interface ClienteRepositoryPort {

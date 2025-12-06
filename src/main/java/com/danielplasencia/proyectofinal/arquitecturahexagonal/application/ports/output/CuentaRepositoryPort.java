@@ -12,5 +12,4 @@ public interface CuentaRepositoryPort {
     List<Cuenta> findAll();
     Optional<Cuenta> findByNumeroCuenta(String numeroCuenta);
 
-
 }
