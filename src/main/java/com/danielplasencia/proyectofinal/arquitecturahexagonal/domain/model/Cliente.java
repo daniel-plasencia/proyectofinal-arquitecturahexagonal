@@ -1,4 +1,5 @@
 package com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.model;
+import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.InvalidCuentaDataException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -20,17 +23,25 @@ public class Cliente {
     private String documento;
     private LocalDateTime fecha_creacion;
 
+    /**
+     * Validaciones
+     * Email formato válido <--- check
+     * Documento único en el sistema
+     */
 
+    public void validarClienteInput(){
 
-    /*
+        if (!this.hasValidEmail()) {
+            throw new InvalidCuentaDataException("Formato de email inválido");
+        }
+    }
 
-    ├─────────────────────────────────┤
-│ PK  id: VARCHAR(50)             │
-│     nombre: VARCHAR(100)        │
-│     email: VARCHAR(100)         │
-│     documento: VARCHAR(20)      │
-│     fecha_creacion: TIMESTAMP
+    public boolean hasValidEmail() {
+        return email != null &&
+                email.contains("@") &&
+                email.contains(".") &&
+                email.length() > 5;
+    }
 
-    */
 
 }
