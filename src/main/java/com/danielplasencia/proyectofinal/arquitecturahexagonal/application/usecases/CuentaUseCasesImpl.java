@@ -6,6 +6,7 @@ import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.input.EncontrarCuentaUseCase;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.ClienteRepositoryPort;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.CuentaRepositoryPort;
+import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.ClienteNotFoundException;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.CuentaNotFoundException;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.InvalidCuentaDataException;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.model.Cliente;
@@ -53,7 +54,7 @@ public class CuentaUseCasesImpl implements CrearCuentaUseCase, EncontrarCuentaUs
         }
 
         // Domain validation
-        newCuenta.validarCuentaInput();
+        //newCuenta.validarCuentaInput();
 
         // Valida que tenga un cliente_id
         if (newCuenta.getCliente_id() == null || newCuenta.getCliente_id().isBlank()) {
@@ -62,7 +63,7 @@ public class CuentaUseCasesImpl implements CrearCuentaUseCase, EncontrarCuentaUs
 
         // Validar si cliente existe
         clienteRepositoryPort.findById(newCuenta.getCliente_id())
-                .orElseThrow(() -> new InvalidCuentaDataException(
+                .orElseThrow(() -> new ClienteNotFoundException(
                         "No existe cliente con id: " + newCuenta.getCliente_id()));
 
 
@@ -92,11 +93,22 @@ public class CuentaUseCasesImpl implements CrearCuentaUseCase, EncontrarCuentaUs
                 });
 
 
+        if (newCuenta.getSaldo() == null) {
+            newCuenta.setSaldo(BigDecimal.ZERO);
+        }
+
+        if (newCuenta.getEstado() == null || newCuenta.getEstado().isBlank()) {
+            newCuenta.setEstado("ACTIVO");
+        }
+
         // Setear fecha de creacion si no viene y actualizar fecha de actualización
         if (newCuenta.getFecha_creacion() == null) {
             newCuenta.setFecha_creacion(LocalDateTime.now());
         }
         newCuenta.setFecha_actualizacion(LocalDateTime.now());
+
+        // Domain validation
+        newCuenta.validarCuentaInput();
 
         return cuentaRepositoryPort.save(newCuenta);
     }
