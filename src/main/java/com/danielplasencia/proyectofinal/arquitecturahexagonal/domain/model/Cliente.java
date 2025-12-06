@@ -2,19 +2,15 @@ package com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.model;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.InvalidCuentaDataException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Cliente {
 
     private int id;

@@ -3,9 +3,6 @@ package com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.model;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.InvalidTransactionDataException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,17 +13,16 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-//@Setter
+@Builder
 public class Transaccion {
 
-    private String transaccion_id;                 // transaccion_id
-    private String cuenta_origen_id;     // cuenta_origen_id
-    private String cuenta_destino_id;    // cuenta_destino_id
-    private BigDecimal monto;          // monto
-    private BigDecimal comision;       // comision
-    private String tipo;               // TRANSFERENCIA / DEPOSITO / RETIRO
-    private String estado;             // PENDIENTE / COMPLETADA / ...
+    private String transaccion_id;
+    private String cuenta_origen_id;
+    private String cuenta_destino_id;
+    private BigDecimal monto;
+    private BigDecimal comision;
+    private String tipo;
+    private String estado;
     private String descripcion;
     private LocalDateTime fecha_creacion;
 
@@ -65,10 +61,15 @@ public class Transaccion {
     }
 
     public boolean hasValidTipoValores(){
-        return (Objects.equals(estado, "TRANSFERENCIA") || Objects.equals(estado, "DEPOSITO") || Objects.equals(estado, "RETIRO"));
+        return (Objects.equals(estado, "TRANSFERENCIA")
+                || Objects.equals(estado, "DEPOSITO")
+                || Objects.equals(estado, "RETIRO"));
     }
 
     public boolean hasValidEstadoValores(){
-        return (Objects.equals(estado, "PENDIENTE") || Objects.equals(estado, "COMPLETADA") || Objects.equals(estado, "FALLIDA") || Objects.equals(estado, "CANCELADA"));
+        return (Objects.equals(estado, "PENDIENTE")
+                || Objects.equals(estado, "COMPLETADA")
+                || Objects.equals(estado, "FALLIDA")
+                || Objects.equals(estado, "CANCELADA"));
     }
 }
