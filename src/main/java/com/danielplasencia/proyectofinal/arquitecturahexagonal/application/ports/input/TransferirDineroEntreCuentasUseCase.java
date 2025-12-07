@@ -6,6 +6,5 @@ import java.math.BigDecimal;
 
 public interface TransferirDineroEntreCuentasUseCase {
 
-    Transaccion transfer(String cuentaOrigenId, String cuentaDestinoId, BigDecimal monto, String descripcion);
-
+    Transaccion transfer(Transaccion transaccionRequest);
 }
