@@ -32,6 +32,6 @@ public class ClienteEntity {
 
     @CreationTimestamp
     @Column(name = "fecha_creacion", nullable = false)
-    private LocalDateTime fecha_creacion;
+    private LocalDateTime fechaCreacion;
 
 }

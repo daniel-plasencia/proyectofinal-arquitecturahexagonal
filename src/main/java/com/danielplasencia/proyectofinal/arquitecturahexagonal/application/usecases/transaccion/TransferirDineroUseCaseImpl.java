@@ -2,7 +2,7 @@ package com.danielplasencia.proyectofinal.arquitecturahexagonal.application.usec
 
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.input.TransferirDineroUseCase;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.CuentaRepositoryPort;
-import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.NotificacionPort;
+import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.NotificacionRepositoryPort;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.TransaccionRepositoryPort;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.CuentaNotFoundException;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.InvalidTransactionDataException;
@@ -23,7 +23,7 @@ public class TransferirDineroUseCaseImpl implements TransferirDineroUseCase {
 
     private final CuentaRepositoryPort cuentaRepositoryPort;
     private final TransaccionRepositoryPort transaccionRepositoryPort;
-    private final NotificacionPort notificacionPort;
+    private final NotificacionRepositoryPort notificacionRepositoryPort;
 
     private static final BigDecimal COMISION_FIJA = new BigDecimal("5.00");
 
@@ -104,7 +104,7 @@ public class TransferirDineroUseCaseImpl implements TransferirDineroUseCase {
 
         // 8) Notificar
         if (cuentaOrigen.getCliente_id() != null) {
-            notificacionPort.notificar(
+            notificacionRepositoryPort.notificar(
                     cuentaOrigen.getCliente_id(),
                     "Has enviado " + monto + " a la cuenta " + cuentaDestinoId +
                             " (se cobró comisión fija de " + COMISION_FIJA + ")"
@@ -112,7 +112,7 @@ public class TransferirDineroUseCaseImpl implements TransferirDineroUseCase {
         }
 
         if (cuentaDestino.getCliente_id() != null) {
-            notificacionPort.notificar(
+            notificacionRepositoryPort.notificar(
                     cuentaDestino.getCliente_id(),
                     "Has recibido " + monto + " desde la cuenta " + cuentaOrigenId
             );

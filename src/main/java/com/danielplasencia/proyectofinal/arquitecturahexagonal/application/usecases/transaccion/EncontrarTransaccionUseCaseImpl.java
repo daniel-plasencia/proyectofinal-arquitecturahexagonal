@@ -1,9 +1,7 @@
 package com.danielplasencia.proyectofinal.arquitecturahexagonal.application.usecases.transaccion;
 
 
-import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.input.EncontrarTransferenciaUseCase;
-import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.ClienteRepositoryPort;
-import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.CuentaRepositoryPort;
+import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.input.EncontrarTransaccionUseCase;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.TransaccionRepositoryPort;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.TransaccionNotFoundException;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.model.Transaccion;
@@ -17,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class EncontrarTransferenciaUseCaseImpl implements EncontrarTransferenciaUseCase {
+public class EncontrarTransaccionUseCaseImpl implements EncontrarTransaccionUseCase {
 
     private final TransaccionRepositoryPort transaccionRepositoryPort;
 

@@ -11,5 +11,8 @@ public interface ClienteRepositoryPort {
     Cliente save(Cliente cliente);
     Optional<Cliente> findById(String clientId);
     Optional<Cliente> findByDocumento(String documento);
+    Optional<Cliente> findByEmail(String email);
     List<Cliente> findAll();
+    boolean existsByEmail(String email);
+    boolean existsByDocumento(String documento);
 }

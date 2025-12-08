@@ -11,4 +11,6 @@ public interface TransaccionRepositoryPort {
     Transaccion save(Transaccion transaccion);
     Optional<Transaccion> findById(String transaccionId);
     List<Transaccion> findAll();
+    List<Transaccion> findByCuentaOrigenId(String cuentaOrigenId);
+    List<Transaccion> findByCuentaDestinoId(String cuentaDestinoId);
 }

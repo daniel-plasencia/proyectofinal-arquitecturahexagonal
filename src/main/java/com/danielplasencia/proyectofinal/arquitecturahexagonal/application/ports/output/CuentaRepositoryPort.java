@@ -11,5 +11,6 @@ public interface CuentaRepositoryPort {
     Optional<Cuenta> findById(String cuentaId);
     List<Cuenta> findAll();
     Optional<Cuenta> findByNumeroCuenta(String numeroCuenta);
+    List<Cuenta> findByClienteId(String clienteId);
 
 }
