@@ -1,6 +1,6 @@
 package com.danielplasencia.proyectofinal.arquitecturahexagonal.application.usecases;
 
-import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.input.TransferirDineroEntreCuentasUseCase;
+import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.input.TransferirDineroUseCase;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.CuentaRepositoryPort;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.NotificacionPort;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.TransaccionRepositoryPort;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class TransaccionUseCasesImpl implements TransferirDineroEntreCuentasUseCase {
+public class TransferirDineroUseCaseImpl implements TransferirDineroUseCase {
 
     private final CuentaRepositoryPort cuentaRepositoryPort;
     private final TransaccionRepositoryPort transaccionRepositoryPort;
@@ -69,7 +69,7 @@ public class TransaccionUseCasesImpl implements TransferirDineroEntreCuentasUseC
             throw new InvalidTransactionDataException("Saldo insuficiente en cuenta origen");
         }
 
-        // 4) Construir la Transacción FINAL (aún no tocamos saldos)
+        // 4) Construir la Transacción FINAL (aún no se toca saldos)
         Transaccion transaccion = Transaccion.builder()
                 .transaccion_id(UUID.randomUUID().toString())
                 .cuenta_origen_id(cuentaOrigenId)

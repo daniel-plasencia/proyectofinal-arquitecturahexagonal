@@ -2,9 +2,7 @@ package com.danielplasencia.proyectofinal.arquitecturahexagonal.application.port
 
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.model.Transaccion;
 
-import java.math.BigDecimal;
-
-public interface TransferirDineroEntreCuentasUseCase {
+public interface TransferirDineroUseCase {
 
     Transaccion transfer(Transaccion transaccionRequest);
 }
