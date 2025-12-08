@@ -1,4 +1,5 @@
 package com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.model;
+import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.InvalidClienteDataException;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.domain.excepciones.InvalidCuentaDataException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Cliente {
 
-    private int id;
+    private String id;
     private String nombre;
     private String email;
     private String documento;
@@ -28,7 +29,7 @@ public class Cliente {
     public void validarClienteInput(){
 
         if (!this.hasValidEmail()) {
-            throw new InvalidCuentaDataException("Formato de email inválido");
+            throw new InvalidClienteDataException("Formato de email inválido");
         }
     }
 

@@ -33,7 +33,7 @@ public class Cuenta {
      */
 
     public void validarCuentaInput(){
-        if (!this.hasSaldoMoreThanZero()) {
+        if (!this.hasSaldoMayorOIgualCero()) {
             throw new InvalidCuentaDataException("El saldo es menor que 0");
         }
 
@@ -42,7 +42,7 @@ public class Cuenta {
         }
     }
 
-    public boolean hasSaldoMoreThanZero(){
+    public boolean hasSaldoMayorOIgualCero(){
         return ((saldo != null) && (saldo.compareTo(BigDecimal.ZERO) >= 0));
     }
 

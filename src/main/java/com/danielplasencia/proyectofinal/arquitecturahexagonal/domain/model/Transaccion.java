@@ -61,9 +61,9 @@ public class Transaccion {
     }
 
     public boolean hasValidTipoValores(){
-        return (Objects.equals(estado, "TRANSFERENCIA")
-                || Objects.equals(estado, "DEPOSITO")
-                || Objects.equals(estado, "RETIRO"));
+        return (Objects.equals(tipo, "TRANSFERENCIA")
+                || Objects.equals(tipo, "DEPOSITO")
+                || Objects.equals(tipo, "RETIRO"));
     }
 
     public boolean hasValidEstadoValores(){
