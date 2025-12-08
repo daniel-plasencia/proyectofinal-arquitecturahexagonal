@@ -87,7 +87,12 @@ public class TransferirDineroUseCaseImpl implements TransferirDineroUseCase {
 
         // 6) Ahora sí: actualizar saldos
         cuentaOrigen.setSaldo(cuentaOrigen.getSaldo().subtract(totalDebito));
-        cuentaDestino.setSaldo(cuentaDestino.getSaldo().add(monto));
+
+
+        BigDecimal saldoDestinoActual =
+                cuentaDestino.getSaldo() == null ? BigDecimal.ZERO : cuentaDestino.getSaldo();
+
+        cuentaDestino.setSaldo(saldoDestinoActual.add(monto));
         cuentaOrigen.setFecha_actualizacion(LocalDateTime.now());
         cuentaDestino.setFecha_actualizacion(LocalDateTime.now());
 
@@ -98,16 +103,21 @@ public class TransferirDineroUseCaseImpl implements TransferirDineroUseCase {
         Transaccion guardada = transaccionRepositoryPort.save(transaccion);
 
         // 8) Notificar
-        notificacionPort.notificar(
-                cuentaOrigen.getCliente_id(),
-                "Has enviado " + monto + " a la cuenta " + cuentaDestinoId +
-                        " (se cobró comisión fija de " + COMISION_FIJA + ")"
-        );
+        if (cuentaOrigen.getCliente_id() != null) {
+            notificacionPort.notificar(
+                    cuentaOrigen.getCliente_id(),
+                    "Has enviado " + monto + " a la cuenta " + cuentaDestinoId +
+                            " (se cobró comisión fija de " + COMISION_FIJA + ")"
+            );
+        }
 
-        notificacionPort.notificar(
-                cuentaDestino.getCliente_id(),
-                "Has recibido " + monto + " desde la cuenta " + cuentaOrigenId
-        );
+        if (cuentaDestino.getCliente_id() != null) {
+            notificacionPort.notificar(
+                    cuentaDestino.getCliente_id(),
+                    "Has recibido " + monto + " desde la cuenta " + cuentaOrigenId
+            );
+        }
+
 
         return guardada;
 

@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface CuentaRepositoryPort {
 
     Cuenta save(Cuenta cuenta);
-    Optional<Cuenta> findById(String accountId);
+    Optional<Cuenta> findById(String cuentaId);
     List<Cuenta> findAll();
     Optional<Cuenta> findByNumeroCuenta(String numeroCuenta);
 
