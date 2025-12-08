@@ -1,4 +1,4 @@
-package com.danielplasencia.proyectofinal.arquitecturahexagonal.application.usecases;
+package com.danielplasencia.proyectofinal.arquitecturahexagonal.application.usecases.transaccion;
 
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.input.TransferirDineroUseCase;
 import com.danielplasencia.proyectofinal.arquitecturahexagonal.application.ports.output.CuentaRepositoryPort;

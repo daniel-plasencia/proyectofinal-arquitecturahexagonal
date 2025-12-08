@@ -22,13 +22,13 @@ public class CuentaEntity {
 
     @Id
     @Column(name = "cuenta_id", length = 50, nullable = false)
-    private String cuenta_id;
+    private String cuentaId;
 
     @Column(name = "cliente_id", length = 50, nullable = false)
-    private String cliente_id;
+    private String clienteId;
 
     @Column(name = "numero_cuenta", length = 20, nullable = false, unique = true)
-    private String numero_cuenta;
+    private String numeroCuenta;
 
     @Column(name = "saldo", precision = 15, scale = 2, nullable = false)
     private BigDecimal saldo;
@@ -37,11 +37,11 @@ public class CuentaEntity {
     private String estado;  // ACTIVO / CERRADO
 
     @CreationTimestamp
-    @Column(name = "fecha_creacion", nullable = false)
-    private LocalDateTime fecha_creacion;
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
 
     @UpdateTimestamp
     @Column(name = "fecha_actualizacion", nullable = false)
-    private LocalDateTime fecha_actualizacion;
+    private LocalDateTime fechaActualizacion;
 
 }

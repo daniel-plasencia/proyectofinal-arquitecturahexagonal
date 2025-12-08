@@ -20,13 +20,13 @@ public class TransaccionEntity {
 
     @Id
     @Column(name = "transaccion_id", length = 50, nullable = false)
-    private String transaccion_id;
+    private String transaccionId;
 
     @Column(name = "cuenta_origen_id", length = 50, nullable = false)
-    private String cuenta_origen_id;
+    private String cuentaOrigenId;
 
     @Column(name = "cuenta_destino_id", length = 50, nullable = false)
-    private String cuenta_destino_id;
+    private String cuentaDestinoId;
 
     @Column(name = "monto", precision = 15, scale = 2, nullable = false)
     private BigDecimal monto;
@@ -44,7 +44,7 @@ public class TransaccionEntity {
     private String descripcion;
 
     @CreationTimestamp
-    @Column(name = "fecha_creacion", nullable = false)
-    private LocalDateTime fecha_creacion;
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
 
 }
