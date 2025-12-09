@@ -355,6 +355,36 @@ Responsabilidades:
 - Enviar notificaciones
 
 ---
+## 7. Patrones de Diseño
 
+### Patron Singleton
+
+En la arquitectura implementada, la clase de configuración de Spring **(Config)** funciona bajo el patrón **Singleton**.
+Esto ocurre automáticamente porque Spring Boot, al procesar las clases anotadas con **@Configuration**, crea una única instancia de dicha clase durante el ciclo de vida de la aplicación.
+
+El objetivo es garantizar que:
+
+* Los beans definidos dentro de la clase de configuración se construyan una sola vez.
+* Todas las partes de la aplicación usen la misma instancia compartida.
+* Se evite la creación repetitiva e innecesaria de objetos.
+
+De esta forma, Spring implementa el patrón Singleton sin necesidad de código adicional (como constructores privados)
+
+### Patron Adapter 
+
+En el proyecto se aplica el patrón Adapter tanto para la entrada como para la salida:
+
+#### Output Adapters:
+
+* **CuentaRepositoryAdapter** implementa **CuentaRepositoryPort** y adapta Spring Data JPA (CuentaJpaRepository).
+* **ClienteRepositoryAdapter** implementa **ClienteRepositoryPort** y adapta Spring Data JPA (ClienteJpaRepository).
+* **TransaccionRepositoryAdapter** implementa **TransaccionRepositoryPort** y adapta Spring Data JPA (TransaccionJpaRepository).
+* **NotificacionAdapter** implementa **NotificacionPort** y adapta las notificaciones a una implementación concreta (consola).
+
+#### Input Adapters:
+
+* ClienteController, CuentaController y TransaccionController actúan como adaptadores REST, transformando HTTP/JSON en llamadas a los casos de uso.
+
+---
 
 
