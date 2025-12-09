@@ -7,4 +7,5 @@ public interface EncontrarCuentaUseCase {
 
     Cuenta findCuentaById(String cuenta_id);
     List<Cuenta> findAllCuenta();
+    List<Cuenta> findByClienteId(String clienteId);
 }

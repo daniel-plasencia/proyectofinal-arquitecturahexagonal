@@ -40,4 +40,22 @@ public class EncontrarTransaccionUseCaseImpl implements EncontrarTransaccionUseC
         return transacciones;
     }
 
+    @Override
+    public List<Transaccion> findByCuentaOrigen(String cuentaOrigenId) {
+        if (cuentaOrigenId == null || cuentaOrigenId.isBlank()) {
+            throw new IllegalArgumentException("cuentaOrigenId no puede ser vacío");
+        }
+        log.info("Buscando transacciones con cuenta_origen_id={}", cuentaOrigenId);
+        return transaccionRepositoryPort.findByCuentaOrigenId(cuentaOrigenId);
+    }
+
+    @Override
+    public List<Transaccion> findByCuentaDestino(String cuentaDestinoId) {
+        if (cuentaDestinoId == null || cuentaDestinoId.isBlank()) {
+            throw new IllegalArgumentException("cuentaDestinoId no puede ser vacío");
+        }
+        log.info("Buscando transacciones con cuenta_destino_id={}", cuentaDestinoId);
+        return transaccionRepositoryPort.findByCuentaDestinoId(cuentaDestinoId);
+    }
+
 }

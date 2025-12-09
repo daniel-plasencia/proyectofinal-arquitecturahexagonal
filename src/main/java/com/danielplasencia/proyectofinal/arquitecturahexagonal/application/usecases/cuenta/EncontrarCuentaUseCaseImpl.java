@@ -41,4 +41,12 @@ public class EncontrarCuentaUseCaseImpl implements EncontrarCuentaUseCase {
         return cuentas;
     }
 
+    @Override
+    public List<Cuenta> findByClienteId(String clienteId) {
+        if (clienteId == null || clienteId.isBlank()) {
+            throw new IllegalArgumentException("clienteId no puede ser vacío");
+        }
+        return cuentaRepositoryPort.findByClienteId(clienteId);
+    }
+
 }

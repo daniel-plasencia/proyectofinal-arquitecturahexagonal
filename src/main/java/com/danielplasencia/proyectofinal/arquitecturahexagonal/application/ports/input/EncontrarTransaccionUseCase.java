@@ -8,4 +8,6 @@ public interface EncontrarTransaccionUseCase {
 
     Transaccion findTransaccionById(String transaccion_id);
     List<Transaccion> findAllTransaccion();
+    List<Transaccion> findByCuentaOrigen(String cuentaOrigenId);
+    List<Transaccion> findByCuentaDestino(String cuentaDestinoId);
 }

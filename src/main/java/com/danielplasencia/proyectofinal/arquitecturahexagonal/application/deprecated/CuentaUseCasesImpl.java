@@ -131,6 +131,11 @@ public class CuentaUseCasesImpl implements CrearCuentaUseCase, EncontrarCuentaUs
         return cuentas;
     }
 
+    @Override
+    public List<Cuenta> findByClienteId(String clienteId) {
+        return List.of();
+    }
+
     // ===================== Helpers privados =====================
     private String generarNumeroCuenta() {
         // Para generar numeros de cuenta
