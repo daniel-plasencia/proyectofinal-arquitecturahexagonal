@@ -386,5 +386,8 @@ En el proyecto se aplica el patrón Adapter tanto para la entrada como para la s
 * ClienteController, CuentaController y TransaccionController actúan como adaptadores REST, transformando HTTP/JSON en llamadas a los casos de uso.
 
 ---
+## 8. ADR
+
+En carpeta /docs
 
 
