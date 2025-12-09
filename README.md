@@ -178,3 +178,183 @@ mvn clean install
 Al reiniciar la aplicación, H2 en memoria se recrea automáticamente.
 
 ---
+
+## 8. Diagrama de arquitectura hexagonal realizada
+
+    --- INFRAESTRUCTURA -----------------------------------------------------------
+
+                         ┌──────────────────────────────┐
+                         │       Input Adapters         │
+                         │      REST Controllers        │
+                         │(Cliente, Cuenta, Transaccion)│
+                         └──────────────┬───────────────┘
+                                        │
+    --- APLICACION -------------------------------------------------------------
+
+                                        │
+                                        ▼
+                           ┌─────────────────────────┐
+                           │     INPUT PORTS         │
+                           │  (Use Case Interfaces)  │
+                           └────────────┬────────────┘
+                                        │
+                                        ▼
+                       ┌─────────────────────────────────────┐
+                       │           APPLICATION               │
+                       │        USE CASES (Domain Logic)     │
+                       │  - CrearCuentaUseCaseImpl           │
+                       │  - ConsultarSaldoUseCaseImpl        │
+                       │  - EncontrarCuentaUseCaseImpl       │
+                       │  - TransferirDineroUseCaseImpl      │
+                       │  - EncontrarClienteUseCaseImpl      │
+                       │  - EncontrarTransferenciaUseCaseImpl│
+                       └──────────────────┬──────────────────┘
+                                          │
+    --- DOMINIO ----------------------------------------------------------------
+
+                                          │
+                                          ▼
+                        ┌──────────────────────────────────┐
+                        │             DOMAIN               │
+                        │  - Modelos (Cliente, Cuenta, Tx) │
+                        │  - Validaciones de negocio       │
+                        │  - Excepciones                   │
+                        └──────────────────┬───────────────┘
+                                           │
+    --- APLICACION --------------------------------------------------------------
+
+                                           │
+                                           ▼
+                       ┌────────────────────────────────────┐
+                       │           OUTPUT PORTS             │
+                       │ - CuentaRepositoryPort             │
+                       │ - ClienteRepositoryPort            │
+                       │ - TransaccionRepositoryPort        │
+                       │ - NotificacionPort                 │
+                       └──────────────────┬─────────────────┘
+                                          │
+    --- INFRAESTRUCTURA ---------------------------------------------------------
+                                          │
+                                          ▼
+           ┌──────────────────────────────┴─────────────────────────────┐
+           │                      ADAPTERS                               │
+           │                                                             │
+           │   Persistence Adapters (Infra Output)                       │
+           │   - CuentaRepositoryAdapter → CuentaJpaRepository           │
+           │   - ClienteRepositoryAdapter → ClienteJpaRepository         │
+           │   - TransaccionRepositoryAdapter → TransaccionJpaRepository │
+           │                                                             │
+           │   Notification Adapter                                      │
+           │   - NotificacionAdapter (Console)            │
+           └────────────────────────────────────────────────────────────┘
+
+**Explicación**
+
+---
+#### A. Adaptadores de Entrada (Input Adapters) (CAPA INFRAESTRUCTURA)
+
+Son los controladores REST que exponen los endpoints públicos del sistema.
+
+Ejemplos:
+
+- `ClienteController`
+- `CuentaController`
+- `TransaccionController`
+
+Responsabilidades:
+
+- Recibir solicitudes HTTP
+- Validar datos
+- Convertir DTO ↔ Domain
+- Invocar el caso de uso correspondiente
+
+**Los controladores NO contienen lógica de negocio.**
+
+---
+#### B. Interfaces de Entrada (Input Ports) (CAPA APLICACION)
+
+Son **interfaces** que definen las operaciones disponibles del sistema.  
+No contienen lógica; solo **qué** acciones se pueden ejecutar.
+
+Ejemplos en el proyecto:
+
+- `CrearCuentaUseCase`
+- `ConsultarSaldoUseCase`
+- `TransferirDineroUseCase`
+- `EncontrarClienteUseCase`
+
+Permiten que los controladores REST interactúen con los casos de uso **sin conocer detalles del dominio o infraestructura**.
+
+---
+
+#### C. Casos de Uso (CAPA APLICACION)
+
+Implementan la lógica de aplicación.  
+Coordinan entidades, validan datos, manejan transacciones y llaman a los repositorios.
+
+Ejemplos:
+
+- `CrearCuentaUseCaseImpl`
+- `TransferirDineroUseCaseImpl`
+- `EncontrarClienteUseCaseImpl`
+
+Características:
+
+- Contienen reglas de aplicación (no de dominio)
+- No conocen JPA, HTTP ni ninguna tecnología externa
+- Usan **output ports** para interactuar con infraestructura
+
+---
+
+#### D. Dominio (CAPA DOMINIO)
+
+Es el corazón del sistema.  
+Contiene las **reglas del negocio puras**, implementadas mediante:
+
+- Entidades: `Cliente`, `Cuenta`, `Transaccion`
+- Validaciones internas
+- Excepciones
+- Invariantes del negocio
+
+Esta capa **no depende de Spring ni de frameworks**, lo que hace que sea altamente testeable y portable.
+
+---
+
+#### E. Interfaces de Salida (Output Ports) (CAPA APLICACION)
+
+Son interfaces que definen *lo que la aplicación necesita* de la infraestructura.
+
+Ejemplos:
+
+- `CuentaRepositoryPort`
+- `ClienteRepositoryPort`
+- `TransaccionRepositoryPort`
+- `NotificacionPort`
+
+Los casos de uso solo dependen de estas interfaces, y no de implementaciones concretas.
+
+---
+
+#### F. Adaptadores de Infraestructura (Output Adapters) (CAPA INFRAESTRUCTURA)
+
+Implementan los *output ports*.  
+Son específicos de la tecnología utilizada (JPA, H2, email, consola, etc.).
+
+Ejemplos:
+
+- `CuentaRepositoryAdapter`
+- `TransaccionRepositoryAdapter`
+- `ClienteRepositoryAdapter`
+- `NotificacionAdapter`
+
+Responsabilidades:
+
+- Convertir Domain ↔ Entity (mapper)
+- Acceder a la base de datos mediante JPA
+- Persistir información
+- Enviar notificaciones
+
+---
+
+
+
